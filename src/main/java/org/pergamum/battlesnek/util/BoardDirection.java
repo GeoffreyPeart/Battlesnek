@@ -1,13 +1,13 @@
 package org.pergamum.battlesnek.util;
 
-public enum Direction {
+public enum BoardDirection {
 	
 	
 	UP("UP"), DOWN("DOWN"),LEFT("LEFT"),RIGHT("RIGHT");
 	
 	String direction;
 	
-	private Direction(String direction)
+	private BoardDirection(String direction)
 	{
 		this.direction = direction;
 	}

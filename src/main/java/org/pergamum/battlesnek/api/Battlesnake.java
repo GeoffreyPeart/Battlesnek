@@ -1,7 +1,7 @@
 package org.pergamum.battlesnek.api;
 
 
-import org.pergamum.battlesnek.util.Direction;
+import org.pergamum.battlesnek.util.BoardDirection;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -52,28 +52,28 @@ public class Battlesnake {
 		}
 	}
 	
-	public Direction findDirection()
+	public BoardDirection findDirection()
 	{
 		Coordinate snekNek = this.body[1];
 		Coordinate head = this.head;
 		
 		if (head.getX() == snekNek.getX()) {
 			if (head.getY() > snekNek.getY()) {
-				return Direction.UP;
+				return BoardDirection.UP;
 
 			} else {
-				return Direction.DOWN;
+				return BoardDirection.DOWN;
 
 			}
 
 		} else {
 		
 			if (head.getX() > snekNek.getX()) {
-				return Direction.RIGHT;
+				return BoardDirection.RIGHT;
 			}
 
 			else {
-				return Direction.LEFT;
+				return BoardDirection.LEFT;
 			}
 
 		}

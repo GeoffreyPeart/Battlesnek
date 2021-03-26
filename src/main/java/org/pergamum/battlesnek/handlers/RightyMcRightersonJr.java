@@ -5,8 +5,10 @@ import org.pergamum.battlesnek.api.Coordinate;
 import org.pergamum.battlesnek.api.MoveResponse;
 import org.pergamum.battlesnek.api.Request;
 import org.pergamum.battlesnek.api.SnekInitResponse;
+import org.pergamum.battlesnek.util.BoardDirection;
 import org.pergamum.battlesnek.util.CellContent;
-import org.pergamum.battlesnek.util.Direction;
+
+import org.pergamum.battlesnek.util.RelativeDirection;
 
 public class RightyMcRightersonJr implements SnekHandler {
 
@@ -20,11 +22,11 @@ public class RightyMcRightersonJr implements SnekHandler {
 	public MoveResponse move(Request request) {
 		try {
 			// 1. Figure out which way you are going
-			Direction facing = request.getYou().findDirection();
+			BoardDirection facing = request.getYou().findDirection();
 
 			// 2. Figure out which way is right
 
-			Direction myRight = whichWayIsRight(facing);
+			BoardDirection myRight = whichWayIsMy(RelativeDirection.RIGHT,facing);
 
 			// 3. Is right safe?
 			Coordinate toMyRight = getAdjacentCoordinate(request.getYou().getHead(),myRight);
@@ -56,19 +58,23 @@ public class RightyMcRightersonJr implements SnekHandler {
 			}
 		
 			// 3.false
-			// 4. is straight safe go straight, else go left.
-
-			// TODO Auto-generated method stub
-			return null;
+			else
+			{
+		//		Direction straightAhead = whichWayIs(Direction.)
+				// 4. is straight safe go straight, else go left.
+				return null;
+			}
+			
+			
 		} catch (Exception e) {
 			MoveResponse m = new MoveResponse();
-			m.setMove(Direction.RIGHT.toString());
+			m.setMove(BoardDirection.RIGHT.toString());
 			m.setShout("<inside voice>I DON'T KNOW WHAT I AM DOING</inside voice>\n<outside voice>GO RIGHT!</right>");
 			return m;
 		}
 	}
 
-	private Coordinate getAdjacentCoordinate(Coordinate head,  Direction direction)
+	private Coordinate getAdjacentCoordinate(Coordinate head,  BoardDirection direction)
 			throws NotPossibleException {
 		Coordinate adjacent = new Coordinate();
 
@@ -105,20 +111,71 @@ public class RightyMcRightersonJr implements SnekHandler {
 		return adjacent;
 	}
 
-	private Direction whichWayIsRight(Direction facing) throws NotPossibleException {
-		switch (facing) {
+	private BoardDirection whichWayIsMy(RelativeDirection rel, BoardDirection facing) throws NotPossibleException {
+		switch(rel)
+		{
 		case RIGHT:
-			return Direction.DOWN;
+			switch (facing) {
+		
+			case RIGHT:
+				return BoardDirection.DOWN;
+			case LEFT:
+				return BoardDirection.UP;
+			case UP:
+				return BoardDirection.RIGHT;
+			case DOWN:
+				return BoardDirection.LEFT;
+			default:
+				throw new NotPossibleException();
+			}
+		case AHEAD:
+			switch (facing) {
+			
+			case RIGHT:
+				return BoardDirection.RIGHT;
+			case LEFT:
+				return BoardDirection.LEFT;
+			case UP:
+				return BoardDirection.UP;
+			case DOWN:
+				return BoardDirection.DOWN;
+			default:
+				throw new NotPossibleException();
+			}
+			
+		case BEHIND:
+			switch (facing) {
+			
+			case RIGHT:
+				return BoardDirection.LEFT;
+			case LEFT:
+				return BoardDirection.RIGHT;
+			case UP:
+				return BoardDirection.DOWN;
+			case DOWN:
+				return BoardDirection.UP;
+			default:
+				throw new NotPossibleException();
+			}
+			
 		case LEFT:
-			return Direction.UP;
-		case UP:
-			return Direction.RIGHT;
-		case DOWN:
-			return Direction.LEFT;
+			switch (facing) {
+			
+			case RIGHT:
+				return BoardDirection.UP;
+			case LEFT:
+				return BoardDirection.DOWN;
+			case UP:
+				return BoardDirection.LEFT;
+			case DOWN:
+				return BoardDirection.RIGHT;
+			default:
+				throw new NotPossibleException();
+			}
 		default:
 			throw new NotPossibleException();
 		}
-
+	
 	}
 
 	@Override
