@@ -54,14 +54,16 @@ public class GeoffreySnekHandler implements SnekHandler {
 		
 		log.info("\n"+ board.visualizeBoard()+"\n");
 		
-		Battlesnake you =request.getYou();
+		Battlesnake you = request.getYou();
 
+		
+		
+		
 		Coordinate foodLocation = findSafeFood(board, you);
+
 		Coordinate ourHead = you.getHead();
 
-		ArrayList<String> preferedMove = new ArrayList<String>();
-		
-		
+		ArrayList<String> preferedMove = new ArrayList<String>();		
 		ArrayList<String> unsafeMoves = unsafeMove(board, you);
 		preferedMove = findPreferedMove(foodLocation, ourHead);
 		preferedMove.removeAll(unsafeMoves);
