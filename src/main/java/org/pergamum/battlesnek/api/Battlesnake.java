@@ -27,7 +27,6 @@ public class Battlesnake {
 	private String squad;
 	
 	public String findFacing() {
-
 		
 		return findDirection().toString();
 	}
