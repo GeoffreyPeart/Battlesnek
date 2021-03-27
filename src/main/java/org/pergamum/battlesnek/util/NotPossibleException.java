@@ -1,4 +1,4 @@
-package org.pergamum.battlesnek.handlers;
+package org.pergamum.battlesnek.util;
 
 // like you should only throw this from places where it can't be thrown, so yeah...
 public class NotPossibleException extends Exception {

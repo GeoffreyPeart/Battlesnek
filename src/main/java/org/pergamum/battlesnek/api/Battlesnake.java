@@ -1,8 +1,8 @@
 package org.pergamum.battlesnek.api;
 
 
-import org.pergamum.battlesnek.handlers.NotPossibleException;
 import org.pergamum.battlesnek.util.BoardDirection;
+import org.pergamum.battlesnek.util.NotPossibleException;
 import org.pergamum.battlesnek.util.RelativeDirection;
 
 import lombok.AllArgsConstructor;
