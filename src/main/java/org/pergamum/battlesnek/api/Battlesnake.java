@@ -1,7 +1,9 @@
 package org.pergamum.battlesnek.api;
 
 
+import org.pergamum.battlesnek.handlers.NotPossibleException;
 import org.pergamum.battlesnek.util.BoardDirection;
+import org.pergamum.battlesnek.util.RelativeDirection;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,29 +29,7 @@ public class Battlesnake {
 	public String findFacing() {
 
 		
-		Coordinate snekNek = this.body[1];
-		Coordinate head = this.head;
-		
-		if (head.getX() == snekNek.getX()) {
-			if (head.getY() > snekNek.getY()) {
-				return "up";
-
-			} else {
-				return "down";
-
-			}
-
-		} else {
-		
-			if (head.getX() > snekNek.getX()) {
-				return "right";
-			}
-
-			else {
-				return "left";
-			}
-
-		}
+		return findDirection().toString();
 	}
 	
 	public BoardDirection findDirection()
@@ -77,5 +57,71 @@ public class Battlesnake {
 			}
 
 		}
+	}
+	
+	public BoardDirection whichWayIsMy(RelativeDirection rel, BoardDirection facing) throws NotPossibleException {
+		switch (rel) {
+		case RIGHT:
+			switch (facing) {
+
+			case RIGHT:
+				return BoardDirection.DOWN;
+			case LEFT:
+				return BoardDirection.UP;
+			case UP:
+				return BoardDirection.RIGHT;
+			case DOWN:
+				return BoardDirection.LEFT;
+			default:
+				throw new NotPossibleException();
+			}
+		case AHEAD:
+			switch (facing) {
+
+			case RIGHT:
+				return BoardDirection.RIGHT;
+			case LEFT:
+				return BoardDirection.LEFT;
+			case UP:
+				return BoardDirection.UP;
+			case DOWN:
+				return BoardDirection.DOWN;
+			default:
+				throw new NotPossibleException();
+			}
+
+		case BEHIND:
+			switch (facing) {
+
+			case RIGHT:
+				return BoardDirection.LEFT;
+			case LEFT:
+				return BoardDirection.RIGHT;
+			case UP:
+				return BoardDirection.DOWN;
+			case DOWN:
+				return BoardDirection.UP;
+			default:
+				throw new NotPossibleException();
+			}
+
+		case LEFT:
+			switch (facing) {
+
+			case RIGHT:
+				return BoardDirection.UP;
+			case LEFT:
+				return BoardDirection.DOWN;
+			case UP:
+				return BoardDirection.LEFT;
+			case DOWN:
+				return BoardDirection.RIGHT;
+			default:
+				throw new NotPossibleException();
+			}
+		default:
+			throw new NotPossibleException();
+		}
+
 	}
 }
