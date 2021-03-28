@@ -17,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RightyMcRightersonJr implements SnekHandler {
 
+	private boolean goingToEat =false;
+
 	@Override
 	public SnekInitResponse initialize() {
 		SnekInitResponse response= new SnekInitResponse();
@@ -44,7 +46,18 @@ public class RightyMcRightersonJr implements SnekHandler {
 
 			final Battlesnake you = request.getYou();
 			final Board board = request.getBoard();
+			
+			if(goingToEat == true)
+			{
+				// go right first if you can.
+				goingToEat = false;
+				m = makeSafeTurn(RelativeDirection.RIGHT, you, board);
+				if (m != null) {
+					log.debug(m.toString());
+					return m;
+				}
 
+			}
 			// still here? try straight?
 			m = makeSafeTurn(RelativeDirection.AHEAD, you, board);
 			if (m != null) {
@@ -213,6 +226,7 @@ public class RightyMcRightersonJr implements SnekHandler {
 			switch (cc) {
 			case FOOD:
 				isItSafe = true;
+				this.goingToEat=true;
 				break; 	
 
 			case EMPTY:
