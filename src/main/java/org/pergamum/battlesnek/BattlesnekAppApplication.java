@@ -7,6 +7,7 @@ import org.pergamum.battlesnek.api.SnekInitResponse;
 import org.pergamum.battlesnek.handlers.BryanSnekHandler;
 import org.pergamum.battlesnek.handlers.GeoffreySnekHandler;
 import org.pergamum.battlesnek.handlers.RightyMcRightersonJr;
+import org.pergamum.battlesnek.handlers.RoborianTreeSnek;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BattlesnekAppApplication {
 
-	private SnekHandler handlers[] = {new BryanSnekHandler(), new GeoffreySnekHandler(), new RightyMcRightersonJr()};
+	private SnekHandler handlers[] = {new BryanSnekHandler(), new GeoffreySnekHandler(), new RightyMcRightersonJr(), new RoborianTreeSnek()};
 	private SnekHandler handler = handlers[2];
 	
 	public static void main(String[] args) {

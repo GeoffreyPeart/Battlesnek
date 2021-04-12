@@ -123,4 +123,39 @@ public class Battlesnake {
 		}
 
 	}
+	
+	public Coordinate getAdjacentCoordinate(BoardDirection direction) throws NotPossibleException {
+		Coordinate adjacent = new Coordinate();
+
+		int x, y;
+
+		switch (direction) {
+		case UP:
+			x = 0;
+			y = 1;
+			break;
+
+		case RIGHT:
+			x = 1;
+			y = 0;
+			break;
+
+		case DOWN:
+			x = 0;
+			y = -1;
+			break;
+
+		case LEFT:
+			x = -1;
+			y = 0;
+			break;
+
+		default:
+			throw new NotPossibleException();
+		}
+
+		adjacent = new Coordinate(this.head.getX() + x, this.head.getY() + y);
+
+		return adjacent;
+	}
 }

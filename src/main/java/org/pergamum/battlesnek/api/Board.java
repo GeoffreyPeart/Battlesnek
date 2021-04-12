@@ -7,6 +7,7 @@ import org.pergamum.battlesnek.util.CellContent;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Board {
 	private int height;
 	private int width;
@@ -40,6 +42,7 @@ public class Board {
 		Arrays.stream(food).forEach(foodItem -> boardVis[foodItem.getX()][foodItem.getY()] = "f");
 
 		Arrays.stream(hazards).forEach(hazard -> boardVis[hazard.getX()][hazard.getY()] = "h");
+
 
 		Arrays.stream(snakes).forEach(snake -> {
 			String id = snake.getId();
@@ -79,7 +82,7 @@ public class Board {
 		if(c.getX()< 0 || 
 		c.getX()>=width ||
 		c.getY()<0 ||
-		c.getY()>height)
+		c.getY()>=height)
 		{
 			return CellContent.EDGE;
 		}
