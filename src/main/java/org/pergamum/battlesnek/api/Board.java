@@ -3,6 +3,7 @@ package org.pergamum.battlesnek.api;
 import java.util.Arrays;
 
 import org.pergamum.battlesnek.util.CellContent;
+import org.springframework.util.SerializationUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -27,7 +28,16 @@ public class Board {
 	@JsonIgnore
 	private CellContent[][] cellContent;
 
+	public Board copy()
+	{
+		Board aCopy = (Board) SerializationUtils.deserialize(SerializationUtils.serialize(this));
+		return aCopy;
+	}
+	
+	
 	public String visualizeBoard() {
+		
+		
 		if (height <= 0) {
 			return "error board too short";
 		}
@@ -69,6 +79,8 @@ public class Board {
 			sb.append("|\n");
 		}
 
+		
+		
 		return sb.toString();
 		// return Arrays.deepToString(boardVis);
 	}

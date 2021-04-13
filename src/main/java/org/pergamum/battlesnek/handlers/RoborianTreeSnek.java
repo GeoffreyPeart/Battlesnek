@@ -79,6 +79,7 @@ public class RoborianTreeSnek implements SnekHandler {
 
 		Board left, right, up, down;
 
+		
 		left = evalutateMove(root, BoardDirection.LEFT);
 		right = evalutateMove(root, BoardDirection.RIGHT);
 		up = evalutateMove(root, BoardDirection.UP);
@@ -130,7 +131,7 @@ public class RoborianTreeSnek implements SnekHandler {
 
 			case SNAKE:
 				/*
-				 * this special case will need to be revisisted once we start anticipating where
+				 * this special case will need to be revisited once we start anticipating where
 				 * opposing snakes will go as well as snake killing.
 				 */
 				// TODO
@@ -158,17 +159,17 @@ public class RoborianTreeSnek implements SnekHandler {
 	}
 
 	private Board advanceBoard(Board board, Coordinate moveInto, boolean growSnake) {
-		Board returnBoard = board; // TODO deep copy or else
+		Board returnBoard = board.copy(); // TODO deep copy or else
 
 		// moved us
-		Battlesnake you = board.getSnakes()[0];
+		Battlesnake you = returnBoard.getSnakes()[0];
 		Coordinate[] yourBody = you.getBody();
 		Coordinate[] tempBody;
 
 		int offset;
 		if (growSnake) {
 			offset = 1;
-			Coordinate[] food = board.getFood();
+			Coordinate[] food = returnBoard.getFood();
 			Coordinate[] newFood = new Coordinate[food.length - 1];
 
 			int f = 0;
