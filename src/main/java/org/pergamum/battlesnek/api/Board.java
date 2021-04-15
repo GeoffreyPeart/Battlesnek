@@ -1,11 +1,14 @@
 package org.pergamum.battlesnek.api;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 import org.pergamum.battlesnek.util.CellContent;
-import org.springframework.util.SerializationUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Board {
+public class Board  {
 	private int height;
 	private int width;
 	private Coordinate[] food;
@@ -28,16 +31,25 @@ public class Board {
 	@JsonIgnore
 	private CellContent[][] cellContent;
 
-	public Board copy()
-	{
-		Board aCopy = (Board) SerializationUtils.deserialize(SerializationUtils.serialize(this));
-		return aCopy;
+	public Board copy() {
+		Board boardCopy = null;
+
+		try {
+			boardCopy = new ObjectMapper().readerFor(Board.class)
+					.readValue(new ObjectMapper().writeValueAsString(this));
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return boardCopy;
 	}
-	
-	
+
 	public String visualizeBoard() {
-		
-		
+
 		if (height <= 0) {
 			return "error board too short";
 		}
@@ -52,7 +64,6 @@ public class Board {
 		Arrays.stream(food).forEach(foodItem -> boardVis[foodItem.getX()][foodItem.getY()] = "f");
 
 		Arrays.stream(hazards).forEach(hazard -> boardVis[hazard.getX()][hazard.getY()] = "h");
-
 
 		Arrays.stream(snakes).forEach(snake -> {
 			String id = snake.getId();
@@ -79,45 +90,35 @@ public class Board {
 			sb.append("|\n");
 		}
 
-		
-		
 		return sb.toString();
 		// return Arrays.deepToString(boardVis);
 	}
 
-	public CellContent whatIsInThatSquare(Coordinate c)
-	{
-		if(cellContent == null)
-		{
+	public CellContent whatIsInThatSquare(Coordinate c) {
+		if (cellContent == null) {
 			initBoardContents();
 		}
-		if(c.getX()< 0 || 
-		c.getX()>=width ||
-		c.getY()<0 ||
-		c.getY()>=height)
-		{
+		if (c.getX() < 0 || c.getX() >= width || c.getY() < 0 || c.getY() >= height) {
 			return CellContent.EDGE;
-		}
-		else
-		{
+		} else {
 			return cellContent[c.getX()][c.getY()];
 		}
 	}
 
 	private void initBoardContents() {
 		cellContent = new CellContent[height][width];
-		
+
 		Arrays.stream(cellContent).forEach(row -> Arrays.fill(row, CellContent.EMPTY));
-		
+
 		Arrays.stream(food).forEach(foodItem -> cellContent[foodItem.getX()][foodItem.getY()] = CellContent.FOOD);
 
 		Arrays.stream(hazards).forEach(hazard -> cellContent[hazard.getX()][hazard.getY()] = CellContent.HAZARD);
 
 		Arrays.stream(snakes).forEach(snake -> {
-			
+
 			Arrays.stream(snake.getBody())
 					.forEach(bodyPart -> cellContent[bodyPart.getX()][bodyPart.getY()] = CellContent.SNAKE);
-			
-		});	
+
+		});
 	}
 }

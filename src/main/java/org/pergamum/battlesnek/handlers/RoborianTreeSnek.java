@@ -1,7 +1,6 @@
 package org.pergamum.battlesnek.handlers;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.pergamum.battlesnek.SnekHandler;
 import org.pergamum.battlesnek.api.Battlesnake;
@@ -10,6 +9,7 @@ import org.pergamum.battlesnek.api.Coordinate;
 import org.pergamum.battlesnek.api.MoveResponse;
 import org.pergamum.battlesnek.api.Request;
 import org.pergamum.battlesnek.api.SnekInitResponse;
+import org.pergamum.battlesnek.simulator.SimpleGameSimulator;
 import org.pergamum.battlesnek.util.BoardDirection;
 import org.pergamum.battlesnek.util.CellContent;
 import org.pergamum.battlesnek.util.NotPossibleException;
@@ -143,7 +143,8 @@ public class RoborianTreeSnek implements SnekHandler {
 				// these are not possible moves
 				return null;
 			}
-			Board advanceWithMove = advanceBoard(board, moveInto, growSnake);
+			SimpleGameSimulator sim = new SimpleGameSimulator();
+			Board advanceWithMove = sim.advanceBoard(board, moveInto, growSnake);
 
 			if (null != advanceWithMove) {
 				return advanceWithMove;
@@ -158,62 +159,7 @@ public class RoborianTreeSnek implements SnekHandler {
 
 	}
 
-	private Board advanceBoard(Board board, Coordinate moveInto, boolean growSnake) {
-		Board returnBoard = board.copy(); // TODO deep copy or else
-
-		// moved us
-		Battlesnake you = returnBoard.getSnakes()[0];
-		Coordinate[] yourBody = you.getBody();
-		Coordinate[] tempBody;
-
-		int offset;
-		if (growSnake) {
-			offset = 1;
-			Coordinate[] food = returnBoard.getFood();
-			Coordinate[] newFood = new Coordinate[food.length - 1];
-
-			int f = 0;
-			int nf = 0;
-			while (nf < food.length)
-			{
-				if(food[f].equals(moveInto))
-				{
-					// skip
-				}
-				else
-				{
-					newFood[nf]=food[f];
-					nf++;
-				}
-				f++;
-			}
-			returnBoard.setFood(newFood);
-			
-			tempBody = Arrays.copyOfRange(yourBody, 1, yourBody.length);
-		} else {
-			offset = 0;
-			tempBody = Arrays.copyOfRange(yourBody, 1, yourBody.length - 1);
-
-		}
-
-		Coordinate[] newBody = new Coordinate[yourBody.length + offset];
-
-		newBody[0] = moveInto;
-
-		for (int i = 0; i < tempBody.length; i++) {
-			newBody[i + 1] = tempBody[i];
-		}
-
-		Battlesnake newYou = new Battlesnake(you.getId(), you.getName(), you.getHealth() - 1, newBody, you.getLatency(),
-				newBody[0], newBody[newBody.length - 1], newBody.length, "", "");
-
-		returnBoard.getSnakes()[0] = newYou;
-
-		// move the rest of them
-		// TODO
-
-		return returnBoard;
-	}
+	
 
 	@Override
 	public void start(Request request) {
