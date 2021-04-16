@@ -51,7 +51,7 @@ public class RoborianTreeSnek implements SnekHandler {
 
 		waterTree(root, MAX_DEPTH, 0);
 
-		BoardDirection move = tapForSyrup(root, new ArrayList<TreeNode<Board>>());
+		BoardDirection move = tapForSyrup(root);
 
 		if (null == move) {
 			move = BoardDirection.RIGHT;
@@ -64,7 +64,7 @@ public class RoborianTreeSnek implements SnekHandler {
 	}
 
 	// find the deepest path.
-	private BoardDirection tapForSyrup(TreeNode<Board> root, ArrayList<TreeNode<Board>> arrayList) {
+	private BoardDirection tapForSyrup(TreeNode<Board> root) {
 		
 		
 		int leftDepth = 0, rightDepth = 0, upDepth = 0, downDepth = 0;

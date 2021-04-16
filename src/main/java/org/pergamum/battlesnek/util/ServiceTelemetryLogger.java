@@ -31,9 +31,9 @@ import lombok.extern.slf4j.Slf4j;
 	     */
 	    @Around("execution(* org.pergamum.*.* (..))")
 	    public Object logBeforeAndAfterServiceMethods(ProceedingJoinPoint pjp) throws Throwable {
-	        log.info("{} has started execution.", pjp.getSignature());
+	        log.debug("{} has started execution.", pjp.getSignature());
 	        Object resultOfMethodCall = pjp.proceed();
-	        log.info("{} finished execution", pjp.getSignature());
+	        log.debug("{} finished execution", pjp.getSignature());
 	        return resultOfMethodCall;
 	    }
 	}

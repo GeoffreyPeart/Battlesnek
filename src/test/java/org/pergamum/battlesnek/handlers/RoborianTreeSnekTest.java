@@ -5,8 +5,13 @@ package org.pergamum.battlesnek.handlers;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Test;
 import org.pergamum.battlesnek.api.SnekInitResponse;
+import org.pergamum.battlesnek.yggdrasil.TreeNode;
 
 /**
  * @author geoffreypeart
@@ -63,6 +68,17 @@ class RoborianTreeSnekTest {
 	@Test
 	void testEnd() {
 		//fail("Not yet implemented");
+	}
+	
+	@Test void tapForSyrup() throws NoSuchMethodException, SecurityException
+	{
+		RoborianTreeSnek snekHandler = new RoborianTreeSnek();
+		// Arrays.stream(snekHandler.getClass().getMethods()).forEach(meth -> meth.setAccessible(true)); ;
+		
+		// Method m = snekHandler.getClass().getMethod("tapForSyrup", TreeNode.class);
+		
+		
+		
 	}
 
 }
