@@ -1,6 +1,10 @@
 package org.pergamum.battlesnek.handlers;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.pergamum.battlesnek.SnekHandler;
 import org.pergamum.battlesnek.api.Battlesnake;
@@ -46,11 +50,10 @@ public class RoborianTreeSnek implements SnekHandler {
 		root.setNodeContent(board);
 
 		waterTree(root, MAX_DEPTH, 0);
-		
+
 		BoardDirection move = tapForSyrup(root, new ArrayList<TreeNode<Board>>());
-		
-		if(null == move)
-		{
+
+		if (null == move) {
 			move = BoardDirection.RIGHT;
 		}
 
@@ -63,23 +66,104 @@ public class RoborianTreeSnek implements SnekHandler {
 	// find the deepest path.
 	private BoardDirection tapForSyrup(TreeNode<Board> root, ArrayList<TreeNode<Board>> arrayList) {
 		
-		if(null != root.getLeftChild())
+		
+		int leftDepth = 0, rightDepth = 0, upDepth = 0, downDepth = 0;
+		
+		if(root.getLeftChild()!=null)
 		{
-			
+			leftDepth = maxDepth(root.getLeftChild(), 0);
 		}
-		// TODO Auto-generated method stub
-		return null;
+		if(root.getUpChild()!=null)
+		{
+			upDepth = maxDepth(root.getUpChild(), 0);
+		}
+		if(root.getDownChild()!=null)
+		{
+			downDepth = maxDepth(root.getDownChild(),0);
+		}
+		if(root.getRightChild()!=null)
+		{
+			rightDepth = maxDepth(root.getRightChild(), 0);
+		}
+		
+		Map<Integer, BoardDirection> testingConcept = new   HashMap<Integer, BoardDirection>();
+		testingConcept.put(leftDepth, BoardDirection.LEFT);
+		testingConcept.put(upDepth, BoardDirection.UP);
+		testingConcept.put(rightDepth, BoardDirection.RIGHT);
+		testingConcept.put(downDepth, BoardDirection.DOWN);
+		
+		List<Integer> sl = new ArrayList<Integer>();
+		sl.addAll(testingConcept.keySet());
+		
+		
+		Collections.sort(sl);
+		log.info("Sorted List " + sl);
+		return testingConcept.get(sl.get(0));
+		
+		
 	}
 
-	
+	private int maxDepth(TreeNode<Board> board, int currentDepth) {
+		// TODO Auto-generated method stub
+		int leftDepth = 0, rightDepth = 0, upDepth = 0, downDepth = 0;
+
+		if (board.getLeftChild() != null) {
+			leftDepth = maxDepth(board.getLeftChild(), currentDepth + 1);
+		}
+		if (board.getUpChild() != null) {
+			upDepth = maxDepth(board.getUpChild(), currentDepth + 1);
+		}
+		if (board.getDownChild() != null) {
+			leftDepth = maxDepth(board.getDownChild(), currentDepth + 1);
+		}
+		if (board.getRightChild() != null) {
+			leftDepth = maxDepth(board.getRightChild(), currentDepth + 1);
+		}
+
+		// TODO fix this terrible code
+		if (leftDepth > rightDepth) {
+			if (leftDepth > upDepth) {
+				if (leftDepth > downDepth) {
+					return leftDepth;
+				} else {
+					return downDepth;
+				}
+
+			} else {
+				if (upDepth > downDepth) {
+					return upDepth;
+				} else {
+					return downDepth;
+				}
+			}
+
+		} else {
+			if (rightDepth > upDepth) {
+				if (rightDepth > downDepth) {
+					return rightDepth;
+				} else {
+					return downDepth;
+				}
+			} else {
+				if (upDepth > downDepth) {
+					return upDepth;
+				} else {
+					return downDepth;
+				}
+			}
+		}
+
+	}
+
 	private void waterTree(TreeNode<Board> root, int maxDepth, int depth) {
+
+		log.info("current depth: |" + depth + "|");
 		if (depth > maxDepth) {
 			return;
 		}
 
 		Board left, right, up, down;
 
-		
 		left = evalutateMove(root, BoardDirection.LEFT);
 		right = evalutateMove(root, BoardDirection.RIGHT);
 		up = evalutateMove(root, BoardDirection.UP);
@@ -88,26 +172,25 @@ public class RoborianTreeSnek implements SnekHandler {
 		if (null != left) {
 			TreeNode<Board> leftNode = new TreeNode<Board>(root, left);
 			root.setLeftChild(leftNode);
-			waterTree(leftNode, maxDepth, depth++);
+			waterTree(leftNode, maxDepth, depth + 1);
 		}
 		if (null != right) {
 			TreeNode<Board> rightNode = new TreeNode<Board>(root, right);
 			root.setRightChild(rightNode);
-			waterTree(rightNode, maxDepth, depth++);
+			waterTree(rightNode, maxDepth, depth + 1);
 		}
 		if (null != up) {
 			TreeNode<Board> upNode = new TreeNode<Board>(root, up);
 			root.setLeftChild(upNode);
-			waterTree(upNode, maxDepth, depth++);
+			waterTree(upNode, maxDepth, depth + 1);
 		}
 		if (null != down) {
 			TreeNode<Board> downNode = new TreeNode<Board>(root, down);
 			root.setLeftChild(downNode);
-			waterTree(downNode, maxDepth, depth++);
+			waterTree(downNode, maxDepth, depth + 1);
+
 		}
 
-		
-		
 	}
 
 	private Board evalutateMove(TreeNode<Board> root, BoardDirection direction) {
@@ -158,8 +241,6 @@ public class RoborianTreeSnek implements SnekHandler {
 		}
 
 	}
-
-	
 
 	@Override
 	public void start(Request request) {
