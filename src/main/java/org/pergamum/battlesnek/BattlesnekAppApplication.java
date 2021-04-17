@@ -1,16 +1,19 @@
 package org.pergamum.battlesnek;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.pergamum.battlesnek.api.MoveResponse;
 import org.pergamum.battlesnek.api.Request;
 import org.pergamum.battlesnek.api.SnekInitResponse;
 import org.pergamum.battlesnek.handlers.BryanSnekHandler;
-import org.pergamum.battlesnek.handlers.GeoffreySnekHandler;
 import org.pergamum.battlesnek.handlers.RightyMcRightersonJr;
 import org.pergamum.battlesnek.handlers.RoborianTreeSnek;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,45 +26,66 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BattlesnekAppApplication {
 
-	private SnekHandler handlers[] = {new BryanSnekHandler(), new GeoffreySnekHandler(), new RightyMcRightersonJr(), new RoborianTreeSnek()};
-	private SnekHandler handler = handlers[2];
+	private Map<String, SnekHandler> handlers;
+	
+	//private SnekHandler handler = 
 	
 	public static void main(String[] args) {
+		
 		SpringApplication.run(BattlesnekAppApplication.class, args);
 	}
 
+	private void initHandlers()
+	{
+		if(null == handlers)
+		{
+			handlers = new HashMap<String, SnekHandler>();
+			handlers.put("Robori", new RoborianTreeSnek());
+			handlers.put("Moldy", new BryanSnekHandler());
+			handlers.put("Righty", new RightyMcRightersonJr());
+		}
+		
+	}
+	
+	public BattlesnekAppApplication() {
+		super();
+		initHandlers();
+//		handlers.put("Robori", new RoborianTreeSnek());
+//		handlers.put("Moldy", new BryanSnekHandler());
+//		handlers.put("Righty", new RightyMcRightersonJr());
+		
+	}
 
-	@GetMapping("/")
-	public SnekInitResponse initializeSnake() {
+	@GetMapping("/{snek}/")
+	public SnekInitResponse initializeSnake(@PathVariable String snek) {
 		log.info("initializeSnake - Entry");
-		SnekInitResponse response = handler.initialize();
-		//SnekInitResponse response = new SnekInitResponse("1", "", "#003B6F", "silly", "skinny", "1");
-
-		/// response.setApiversion("1");
-
-		// , "", "#003B6F", "silly", "skinny", "1");
-
+//		initHandlers();
+		SnekInitResponse response = handlers.get(snek).initialize();
+	
 		return response;
 	}
 
-	@PostMapping("/start")
-	public void start(@RequestBody Request req) {
+	@PostMapping("/{snek}/start")
+	public void start(@PathVariable String snek, @RequestBody Request req) {
 		log.info(req.toString());
-		handler.start(req);
+//		initHandlers();
+		handlers.get(snek).start(req);
 	}
 
-	@PostMapping("/end")
-	public void end(@RequestBody Request req) {
+	@PostMapping("/{snek}/end")
+	public void end(@PathVariable String snek, @RequestBody Request req) {
 		log.info(req.toString());
-		handler.end(req);
+	//	initHandlers();
+		handlers.get(snek).end(req);
 	}
 
-	@PostMapping("/move")
-	public @ResponseBody MoveResponse move(@RequestBody Request req)
+	@PostMapping("/{snek}/move")
+	public @ResponseBody MoveResponse move(@PathVariable String snek, @RequestBody Request req)
 
 	{
 		log.info(req.toString());
-		MoveResponse response = handler.move(req);
+//		initHandlers();
+		MoveResponse response = handlers.get(snek).move(req);
 		log.info(response.toString());
 		return response;
 	}
