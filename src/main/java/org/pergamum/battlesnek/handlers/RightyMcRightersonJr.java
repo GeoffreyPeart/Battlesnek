@@ -26,8 +26,8 @@ public class RightyMcRightersonJr implements SnekHandler {
 		response.setName("Phil the Cheese Snek");
 		response.setAuthor("Bryan Peart, and Geoffrey Peart");
 		response.setColor("#f08a45");
-		response.setHead("smile");
-		response.setTail("ghost");
+		response.setHead("rbc-bowler");
+		response.setTail("snail");
 		
 		return response;
 	}

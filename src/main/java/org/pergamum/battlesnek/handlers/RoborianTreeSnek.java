@@ -65,47 +65,53 @@ public class RoborianTreeSnek implements SnekHandler {
 
 	// find the deepest path.
 	private BoardDirection tapForSyrup(TreeNode<Board> root) {
-		
-		
+
 		int leftDepth = 0, rightDepth = 0, upDepth = 0, downDepth = 0;
-		
-		if(root.getLeftChild()!=null)
-		{
+
+		if (root.getLeftChild() != null) {
 			leftDepth = maxDepth(root.getLeftChild(), 0);
 		}
-		if(root.getUpChild()!=null)
-		{
+		if (root.getUpChild() != null) {
 			upDepth = maxDepth(root.getUpChild(), 0);
 		}
-		if(root.getDownChild()!=null)
-		{
-			downDepth = maxDepth(root.getDownChild(),0);
+		if (root.getDownChild() != null) {
+			downDepth = maxDepth(root.getDownChild(), 0);
 		}
-		if(root.getRightChild()!=null)
-		{
+		if (root.getRightChild() != null) {
 			rightDepth = maxDepth(root.getRightChild(), 0);
 		}
-		
-		Map<Integer, BoardDirection> testingConcept = new   HashMap<Integer, BoardDirection>();
-		testingConcept.put(leftDepth, BoardDirection.LEFT);
-		testingConcept.put(upDepth, BoardDirection.UP);
-		testingConcept.put(rightDepth, BoardDirection.RIGHT);
-		testingConcept.put(downDepth, BoardDirection.DOWN);
-		
+
+		Map<Integer, BoardDirection> testingConcept = new HashMap<Integer, BoardDirection>();
+		if (leftDepth >= 0) {
+			testingConcept.put(leftDepth, BoardDirection.LEFT);
+		}
+		if (upDepth >= 0) {
+			testingConcept.put(upDepth, BoardDirection.UP);
+		}
+		if (rightDepth >= 0) {
+			testingConcept.put(rightDepth, BoardDirection.RIGHT);
+		}
+		if (downDepth >= 0) {
+			testingConcept.put(downDepth, BoardDirection.DOWN);
+		}
+
+		if (testingConcept.size() <= 0) {
+			return BoardDirection.RIGHT;
+		}
+
 		List<Integer> sl = new ArrayList<Integer>();
 		sl.addAll(testingConcept.keySet());
-		
-		
+
 		Collections.sort(sl);
 		log.info("Sorted List " + sl);
 		return testingConcept.get(sl.get(0));
-		
-		
+
 	}
 
 	private int maxDepth(TreeNode<Board> board, int currentDepth) {
-		// TODO Auto-generated method stub
-		int leftDepth = 0, rightDepth = 0, upDepth = 0, downDepth = 0;
+		log.info("Tree walk - entry - current Depth: " + currentDepth);
+
+		int leftDepth = -1, rightDepth = -1, upDepth = -1, downDepth = -1;
 
 		if (board.getLeftChild() != null) {
 			leftDepth = maxDepth(board.getLeftChild(), currentDepth + 1);
@@ -120,19 +126,26 @@ public class RoborianTreeSnek implements SnekHandler {
 			leftDepth = maxDepth(board.getRightChild(), currentDepth + 1);
 		}
 
+		log.info("Tree walk - post recursion - left |" + leftDepth + "| rightDepth |" + rightDepth + "| upDepth |"
+				+ upDepth + "| downDepths |" + downDepth + "|");
+
 		// TODO fix this terrible code
 		if (leftDepth > rightDepth) {
 			if (leftDepth > upDepth) {
 				if (leftDepth > downDepth) {
+					log.info("return left");
 					return leftDepth;
 				} else {
+					log.info("return down");
 					return downDepth;
 				}
 
 			} else {
 				if (upDepth > downDepth) {
+					log.info("return up");
 					return upDepth;
 				} else {
+					log.info("return down");
 					return downDepth;
 				}
 			}
@@ -140,14 +153,18 @@ public class RoborianTreeSnek implements SnekHandler {
 		} else {
 			if (rightDepth > upDepth) {
 				if (rightDepth > downDepth) {
+					log.info("return right");
 					return rightDepth;
 				} else {
+					log.info("return down");
 					return downDepth;
 				}
 			} else {
 				if (upDepth > downDepth) {
+					log.info("return up");
 					return upDepth;
 				} else {
+					log.info("return down");
 					return downDepth;
 				}
 			}
