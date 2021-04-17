@@ -1,6 +1,5 @@
 package org.pergamum.battlesnek;
 
-
 import org.pergamum.battlesnek.api.MoveResponse;
 import org.pergamum.battlesnek.api.Request;
 import org.pergamum.battlesnek.api.SnekInitResponse;
@@ -23,46 +22,47 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BattlesnekAppApplication {
 
-	private SnekHandler handlers[] = {new BryanSnekHandler(), new GeoffreySnekHandler(), new RightyMcRightersonJr(), new RoborianTreeSnek()};
-	private SnekHandler handler = handlers[3];
-	
-	public static void main(String[] args) {
-		SpringApplication.run(BattlesnekAppApplication.class, args);
-	}
+  private SnekHandler handlers[] = { new BryanSnekHandler(), new GeoffreySnekHandler(), new RightyMcRightersonJr(),
+      new RoborianTreeSnek() };
+  private SnekHandler handler = handlers[2];
 
+  public static void main(String[] args) {
+    SpringApplication.run(BattlesnekAppApplication.class, args);
+  }
 
-	@GetMapping("/")
-	public SnekInitResponse initializeSnake() {
-		log.info("initializeSnake - Entry");
-		SnekInitResponse response = handler.initialize();
-		//SnekInitResponse response = new SnekInitResponse("1", "", "#003B6F", "silly", "skinny", "1");
+  @GetMapping("/")
+  public SnekInitResponse initializeSnake() {
+    log.info("initializeSnake - Entry");
+    SnekInitResponse response = handler.initialize();
+    // SnekInitResponse response = new SnekInitResponse("1", "", "#003B6F", "silly",
+    // "skinny", "1");
 
-		/// response.setApiversion("1");
+    /// response.setApiversion("1");
 
-		// , "", "#003B6F", "silly", "skinny", "1");
+    // , "", "#003B6F", "silly", "skinny", "1");
 
-		return response;
-	}
+    return response;
+  }
 
-	@PostMapping("/start")
-	public void start(@RequestBody Request req) {
-		log.info(req.toString());
-		handler.start(req);
-	}
+  @PostMapping("/start")
+  public void start(@RequestBody Request req) {
+    log.info(req.toString());
+    handler.start(req);
+  }
 
-	@PostMapping("/end")
-	public void end(@RequestBody Request req) {
-		log.info(req.toString());
-		handler.end(req);
-	}
+  @PostMapping("/end")
+  public void end(@RequestBody Request req) {
+    log.info(req.toString());
+    handler.end(req);
+  }
 
-	@PostMapping("/move")
-	public @ResponseBody MoveResponse move(@RequestBody Request req)
+  @PostMapping("/move")
+  public @ResponseBody MoveResponse move(@RequestBody Request req)
 
-	{
-		log.info(req.toString());
-		MoveResponse response = handler.move(req);
-		log.info(response.toString());
-		return response;
-	}
+  {
+    log.info(req.toString());
+    MoveResponse response = handler.move(req);
+    log.info(response.toString());
+    return response;
+  }
 }
