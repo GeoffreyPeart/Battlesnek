@@ -1,9 +1,9 @@
 package org.pergamum.battlesnek;
 
 
+
 import java.util.HashMap;
 import java.util.Map;
-
 import org.pergamum.battlesnek.api.MoveResponse;
 import org.pergamum.battlesnek.api.Request;
 import org.pergamum.battlesnek.api.SnekInitResponse;
@@ -25,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootApplication
 @Slf4j
 public class BattlesnekAppApplication {
-
 	private Map<String, SnekHandler> handlers;
 	
 	//private SnekHandler handler = 
@@ -49,28 +48,27 @@ public class BattlesnekAppApplication {
 	
 	public BattlesnekAppApplication() {
 		super();
-		initHandlers();
-//		handlers.put("Robori", new RoborianTreeSnek());
-//		handlers.put("Moldy", new BryanSnekHandler());
-//		handlers.put("Righty", new RightyMcRightersonJr());
-		
+		initHandlers();		
 	}
+
+
 
 	@GetMapping("/{snek}/")
 	public SnekInitResponse initializeSnake(@PathVariable String snek) {
 		log.info("initializeSnake - Entry");
-//		initHandlers();
+
 		SnekInitResponse response = handlers.get(snek).initialize();
 	
 		return response;
 	}
 
+
 	@PostMapping("/{snek}/start")
 	public void start(@PathVariable String snek, @RequestBody Request req) {
 		log.info(req.toString());
-//		initHandlers();
 		handlers.get(snek).start(req);
 	}
+
 
 	@PostMapping("/{snek}/end")
 	public void end(@PathVariable String snek, @RequestBody Request req) {
@@ -81,10 +79,8 @@ public class BattlesnekAppApplication {
 
 	@PostMapping("/{snek}/move")
 	public @ResponseBody MoveResponse move(@PathVariable String snek, @RequestBody Request req)
-
 	{
 		log.info(req.toString());
-//		initHandlers();
 		MoveResponse response = handlers.get(snek).move(req);
 		log.info(response.toString());
 		return response;
