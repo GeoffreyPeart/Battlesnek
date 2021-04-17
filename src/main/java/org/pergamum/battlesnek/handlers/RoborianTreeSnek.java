@@ -104,7 +104,9 @@ public class RoborianTreeSnek implements SnekHandler {
 
 		Collections.sort(sl);
 		log.info("Sorted List " + sl);
-		return testingConcept.get(sl.get(0));
+
+		log.info("testingConcept " + testingConcept);
+		return testingConcept.get(sl.get(sl.size()-1));
 
 	}
 
@@ -129,6 +131,11 @@ public class RoborianTreeSnek implements SnekHandler {
 		log.info("Tree walk - post recursion - left |" + leftDepth + "| rightDepth |" + rightDepth + "| upDepth |"
 				+ upDepth + "| downDepths |" + downDepth + "|");
 
+		if(-1 == leftDepth && -1 == rightDepth && upDepth ==-1 &&downDepth == -1)
+		{
+			return currentDepth;
+		}
+		
 		// TODO fix this terrible code
 		if (leftDepth > rightDepth) {
 			if (leftDepth > upDepth) {
