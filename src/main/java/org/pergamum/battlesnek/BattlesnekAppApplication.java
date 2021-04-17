@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 public class BattlesnekAppApplication {
 
 	private SnekHandler handlers[] = {new BryanSnekHandler(), new GeoffreySnekHandler(), new RightyMcRightersonJr(), new RoborianTreeSnek()};
-	private SnekHandler handler = handlers[3];
+	private SnekHandler handler = handlers[2];
 	
 	public static void main(String[] args) {
 		SpringApplication.run(BattlesnekAppApplication.class, args);
