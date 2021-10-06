@@ -199,6 +199,7 @@ public class RightyMcRightersonJr implements SnekHandler {
 			case EMPTY:
 				isItSafe = true;
 				break;
+				
 			default:
 				isItSafe = false;
 			}

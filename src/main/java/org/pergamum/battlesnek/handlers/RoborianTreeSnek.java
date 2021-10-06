@@ -24,6 +24,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RoborianTreeSnek implements SnekHandler {
 
+	private static final MoveResponse  DEFAULT_MOVE_RESPONSE = new MoveResponse();
+	static {
+		DEFAULT_MOVE_RESPONSE.setMove(BoardDirection.RIGHT.toString());
+		DEFAULT_MOVE_RESPONSE.setShout("I AM ROBORI!\\n<translation> Defaulting Right");
+	}
+	
 	private static final int MAX_DEPTH = 3;
 
 	@Override
@@ -41,7 +47,18 @@ public class RoborianTreeSnek implements SnekHandler {
 
 	@Override
 	public MoveResponse move(Request request) {
+		long timer = System.currentTimeMillis();
 
+	
+		
+		if(null == request)
+		{
+			// failed basic input validation
+			return DEFAULT_MOVE_RESPONSE;
+		}
+		
+		log.debug(request.toString());
+		
 		MoveResponse response = new MoveResponse();
 
 		Board board = request.getBoard();
@@ -60,6 +77,10 @@ public class RoborianTreeSnek implements SnekHandler {
 		response.setMove(move.toString());
 		response.setShout("I AM ROBORI!\n<translation>I am going --|" + response.getMove() + "|--");
 		log.info(response.toString());
+		timer = System.currentTimeMillis() - timer;
+		
+		log.info("response time: --|" + timer + "|--");
+	
 		return response;
 	}
 
@@ -82,6 +103,7 @@ public class RoborianTreeSnek implements SnekHandler {
 		}
 
 		Map<Integer, BoardDirection> testingConcept = new HashMap<Integer, BoardDirection>();
+		
 		if (leftDepth >= 0) {
 			testingConcept.put(leftDepth, BoardDirection.LEFT);
 		}
@@ -205,12 +227,12 @@ public class RoborianTreeSnek implements SnekHandler {
 		}
 		if (null != up) {
 			TreeNode<Board> upNode = new TreeNode<Board>(root, up);
-			root.setLeftChild(upNode);
+			root.setUpChild(upNode);
 			waterTree(upNode, maxDepth, depth + 1);
 		}
 		if (null != down) {
 			TreeNode<Board> downNode = new TreeNode<Board>(root, down);
-			root.setLeftChild(downNode);
+			root.setDownChild(downNode);
 			waterTree(downNode, maxDepth, depth + 1);
 
 		}

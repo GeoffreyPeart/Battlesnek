@@ -31,7 +31,7 @@ class SimpleGameSimulatorTest {
 
 	
 	@Test
-	void testAdvanceBoard() {
+	void testAdvanceBoardWithoutGrowth() {
 		// test initialization
 		Board testBoard = new Board(5, 5, TEST_FOOD, TEST_HAZARDS, TEST_SNAKES, null);
 
@@ -40,6 +40,20 @@ class SimpleGameSimulatorTest {
 		assertNotNull(advancedBoard);
 		assertEquals(CellContent.SNAKE, advancedBoard.whatIsInThatSquare(new Coordinate(3,2)));
 		assertEquals(CellContent.EMPTY, advancedBoard.whatIsInThatSquare(new Coordinate(1,4)));
+		
+	}
+	
+	
+	@Test
+	void testAdvanceBoardWithGrowth() {
+		// test initialization
+		Board testBoard = new Board(5, 5, TEST_FOOD, TEST_HAZARDS, TEST_SNAKES, null);
+
+		SimpleGameSimulator sgs = new SimpleGameSimulator();
+		Board advancedBoard = sgs.advanceBoard(testBoard,  new Coordinate(3, 2), true);
+		assertNotNull(advancedBoard);
+		assertEquals(CellContent.SNAKE, advancedBoard.whatIsInThatSquare(new Coordinate(3,2)));
+		assertEquals(CellContent.SNAKE, advancedBoard.whatIsInThatSquare(new Coordinate(1,4)));
 		
 	}
 
